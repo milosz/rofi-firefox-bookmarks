@@ -1,0 +1,1 @@
+# rofi-firefox-bookmarks
