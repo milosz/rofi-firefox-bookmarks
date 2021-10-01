@@ -3,7 +3,7 @@
 # rofi -show firefox_tree -modi "firefox_tree:/path/to/rofi_firefox_tree.sh"
 
 # places.sqlite location
-places_file="$(find /home/milosz/.mozilla/firefox/*.default*/ -name "places.sqlite" -print -quit)"
+places_file="$(find ~/.mozilla/firefox/*.default*/ -name "places.sqlite" -print -quit)"
 
 # places.sqlite copy
 places_backup="$(dirname "${places_file}")/places.rofi.sqlite"

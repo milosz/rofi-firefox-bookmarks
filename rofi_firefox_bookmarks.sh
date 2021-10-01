@@ -3,7 +3,7 @@
 # rofi -show firefox_bookmarks -modi "firefox_bookmarks:/path/to/rofi_firefox_bookmarks.sh"
 
 # places.sqlite location
-places_file="$(find /home/milosz/.mozilla/firefox/*.default*/ -name "places.sqlite" -print -quit)"
+places_file="$(find ~/.mozilla/firefox/*.default*/ -name "places.sqlite" -print -quit)"
 
 # places.sqlite copy
 places_backup="$(dirname "${places_file}")/places.rofi.sqlite"
@@ -30,7 +30,7 @@ create_backup() {
 
 # process bookmarks
 process_bookmarks() {
-  query="select p.title, p.url from moz_bookmarks as b left outer join moz_places as p on b.fk=p.id where b.type = 1 and p.hidden=0 and b.title not null" #  and parent=$1
+  query="select p.title, p.url, b.id from moz_bookmarks as b left outer join moz_places as p on b.fk=p.id where b.type = 1 and p.hidden=0 and b.title not null" #  and parent=$1
   $sqlite_path $sqlite_params "$places_backup" "$query" | while IFS=^ read title url id; do
     if [ -z "$title" ]; then
       title="$url"
