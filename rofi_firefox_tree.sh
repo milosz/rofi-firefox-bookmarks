@@ -76,12 +76,11 @@ process_folder() {
 # process bookmarks
 process_bookmarks() {
   if [ "$#" = 1 ] && [ -n "$1" ]; then
-    query="select b.title, p.url, b.id from moz_bookmarks as b left outer join moz_places as p on b.fk=p.id where b.type = 1 and p.hidden=0 and b.title not null and parent=$1"
-    $sqlite_path $sqlite_params "$places_backup" "$query" | while IFS=^ read title url id; do
+    query="select b.title, p.url, b.id, SUBSTR(SUBSTR(p.url, INSTR(url, '//') + 2), 0, INSTR(SUBSTR(p.url, INSTR(p.url, '//') + 2), '/')) from moz_bookmarks as b left outer join moz_places as p on b.fk=p.id where b.type = 1 and p.hidden=0 and b.title not null and parent=$1"
+	$sqlite_path $sqlite_params "$places_backup" "$query" | while IFS=^ read title url id domain; do
       if [ -z "$title" ]; then
         title="$url"
       fi
-      domain="$(echo "$url" | awk -F/ '{print $3}')"
       printf "%-500s {id:%s}\n" "$title [$domain]" "$id"
     done
   fi
