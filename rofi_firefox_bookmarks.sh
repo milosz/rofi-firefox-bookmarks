@@ -45,7 +45,7 @@ process_bookmark() {
     id="$(echo $1 | sed "s|.*{id:\(.*\)}$|\1|")"
     query="select p.url from moz_bookmarks as b left outer join moz_places as p on b.fk=p.id where b.type = 1 and p.hidden=0 and b.title not null and b.id=$id"
     url="$($sqlite_path $sqlite_params "$places_backup" "$query")"
-    $browser_path "$url"
+    nohup $browser_path "$url" >/dev/null 2>&1 &
   fi
 }
 
